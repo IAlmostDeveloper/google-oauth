@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	googleOauthConfig = &.Config{
+	googleOauthConfig = &oauth2.Config{
 		RedirectURL: "http://localhost:8080/callback",
 		ClientID: "574484498021-l0tqmv2jfa9t9akmsruutva6sd0824a6.apps.googleusercontent.com",
 		ClientSecret:  "fkK3H-ovtu7pcTdOxzFojMmb",
@@ -34,7 +34,7 @@ func handleCallback(writer http.ResponseWriter, request *http.Request) {
 		http.Redirect(writer, request, "/", http.StatusTemporaryRedirect)
 		return
 	}
-	token ,err := googleOauthConfig.Exchange(.NoContext, request.FormValue("code"))
+	token ,err := googleOauthConfig.Exchange(oauth2.NoContext, request.FormValue("code"))
 	if err != nil{
 		fmt.Printf("could not get token : %s \n", err.Error())
 		http.Redirect(writer, request, "/", http.StatusTemporaryRedirect)
